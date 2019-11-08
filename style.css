@@ -1,0 +1,28 @@
+@import url(https://fonts.googleapis.com/css?family=Big+Shoulders+Text:100,300,regular,500,600,700,800,900);
+body {
+    text-align: center;
+    font-family: "Big Shoulders Text";
+    font-size: 2em;
+}
+
+.green {
+    fill: #95B60E
+}
+
+#mot {
+    font-size: 2em;
+}
+
+#echange {
+    opacity: 1;
+    transform: opacity;
+    transition: 1s linear;
+    -webkit-transition: 1s linear;
+    -moz-transition: 1s linear;
+    -ms-transition: 1s linear;
+    -o-transition: 1s linear;
+    -webkit-transform: opacity;
+    -moz-transform: opacity;
+    -ms-transform: opacity;
+    -o-transform: opacity;
+}
