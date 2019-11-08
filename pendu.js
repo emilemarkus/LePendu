@@ -39,6 +39,7 @@ function init(lemot) {
                 for (id in arrLetterWord) {
                     if (arrLetterWord[id] == sendLetter) {
                         arrStringToDisp.splice(id, 1, sendLetter);
+                        document.getElementById("userLetter").value="";
                         essaie++;
                         updateDomTarget();
                         //checker si fin du mot ou pas
