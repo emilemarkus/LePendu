@@ -1,15 +1,15 @@
 function init(lemot) {
     // initialisation des valeurs
-    essaie = 0;
+    let essaie = 0;
     console.log(lemot);
 
     //on met les caractère en capital
     lemot = lemot.toUpperCase();
     // mle caractère pour les lettre non trouvé
-    hidChar = "_ ";
+    let hidChar = "_ ";
     arrLetterWord = lemot.split('');
     // le array des lettres déjà saisie;
-    arrLetterYet = [];
+    let arrLetterYet = [];
     // la variable a afficher et updater pour l'affichage du mot
     arrStringToDisp = new Array(lemot.length);
     // on remplit le tableau initial avec les caractere cacher
@@ -27,34 +27,37 @@ function init(lemot) {
     //ecoute des touches 
     document.getElementById("send").addEventListener("click", () => {
         console.log(arrLetterYet);
-        sendLetter = document.getElementById("userLetter").value.toUpperCase();
+        let sendLetter = document.getElementById("userLetter").value.toUpperCase();
         // check si la lettre entrer existe déjà
-        letExistYet = arrLetterYet.indexOf(sendLetter);
+        let letExistYet = arrLetterYet.indexOf(sendLetter);
         //si la lettre n'a pas encore été proposé
-        if (letExistYet < 0) {
-            arrLetterYet.push(sendLetter);
-            //on check si elle existe dans notre mot
-            letExistInWord = arrLetterWord.indexOf(sendLetter);
-            if (letExistInWord >= 0) {
-                for (id in arrLetterWord) {
-                    if (arrLetterWord[id] == sendLetter) {
-                        arrStringToDisp.splice(id, 1, sendLetter);
-                        document.getElementById("userLetter").value="";
-                        essaie++;
-                        updateDomTarget();
-                        //checker si fin du mot ou pas
-                        let findWord = arrStringToDisp.indexOf('_ ');
-                        if (findWord < 0) {
-                            domTarget.style.color = "green";
-                            alert(`Bravo, vous avez trouvez le mot ${lemot} en ${essaie} essaie(s)`);
+        let ifNum = /[a-zA-Z]/;
+        if (ifNum.test(sendLetter)) {
+            if (letExistYet < 0) {
+                arrLetterYet.push(sendLetter);
+                //on check si elle existe dans notre mot
+                let letExistInWord = arrLetterWord.indexOf(sendLetter);
+                if (letExistInWord >= 0) {
+                    for (id in arrLetterWord) {
+                        if (arrLetterWord[id] == sendLetter) {
+                            arrStringToDisp.splice(id, 1, sendLetter);
+                            document.getElementById("userLetter").value = "";
+                            essaie++;
+                            updateDomTarget();
+                            //checker si fin du mot ou pas
+                            let findWord = arrStringToDisp.indexOf('_ ');
+                            if (findWord < 0) {
+                                domTarget.style.color = "green";
+                                alert(`Bravo, vous avez trouvez le mot ${lemot} en ${essaie} essaie(s)`);
 
+                            }
                         }
                     }
                 }
+            } else {
+                letterYet();
+                essaie++;
             }
-        } else {
-            letterYet();
-            essaie++;
         }
     });
     document.getElementById("renew").addEventListener("click", () => {
