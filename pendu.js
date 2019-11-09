@@ -37,7 +37,7 @@ function updateWord() {
     }
 }
 // evenement bouton
-document.getElementById("bouton").addEventListener("click", () => {
+document.getElementById("send").addEventListener("click", () => {
     let letterUser = document.getElementById("userLetter").value.toLowerCase();
     let existe = tabUserLetter.indexOf(letterUser);
     if (existe < 0) {
