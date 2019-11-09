@@ -1,121 +1,93 @@
-function init(lemot) {
-    // initialisation des valeurs
-    essaie = 0;
-    console.log(lemot);
-    error = 0;
-    //on met les caractère en capital
-    lemot = lemot.toUpperCase();
-    // mle caractère pour les lettre non trouvé
-    hidChar = "_ ";
-    arrLetterWord = lemot.split('');
-    // le array des lettres déjà saisie;
-    arrLetterYet = [];
-    // la variable a afficher et updater pour l'affichage du mot
-    arrStringToDisp = new Array(lemot.length);
-    // on remplit le tableau initial avec les caractere cacher
-    arrStringToDisp.fill(hidChar);
-    // et on affiche  la string de départ
-    domTarget = document.getElementById("mot");
-    domTarget.innerHTML = arrStringToDisp.join(' ');
+// initialisation
+function init() {
+    //tabLetterToFind = ['B', 'O', 'N', 'J', 'O', 'U', 'R'];
+    console.log(tabLetterToFind);
+    word = tabLetterToFind.reduce((a, b) => a + b);
+    dictionnaire = [];
+    tabUserLetter = [];
+    essai = 0;
+    nbLetToFind = tabLetterToFind.length;
+    patternToReturn = [];
+    patternToReturn.length = tabLetterToFind.length;
+    pattern = /^[a-zA-Z]/;
+    targetPos = document.getElementById("mot");
+    targetPos.innerHTML = "";
+    initWord();
+}
 
-    /*  base de test */
+function initWord() {
+    for (letter in tabLetterToFind) {
+        patternToReturn[letter] = ('_');
+    }
+    //on affiche le tout
+    for (elem of patternToReturn) {
+        targetPos.innerHTML += elem + " ";
+    }
+}
 
+function updateWord() {
+    aff = "";
+    for (letter in patternToReturn) {
+        aff += patternToReturn[letter] + " ";
+    }
+    targetPos.innerHTML = aff;
+    if (nbLetToFind == 0) {
+        alert(`Bravo vous avez trouvez le mot ${word}en ${essai} essaie(s)`)
+            //init();
+    }
+}
+// evenement bouton
+document.getElementById("bouton").addEventListener("click", () => {
+    let letterUser = document.getElementById("userLetter").value.toLowerCase();
+    let existe = tabUserLetter.indexOf(letterUser);
+    if (existe < 0) {
+        pattern = /[a-z A-Z]/;
+        let stringOrNot = pattern.test(letterUser);
+        if (stringOrNot) {
+            for (let1 in tabLetterToFind) {
+                if (tabLetterToFind[let1] == letterUser) {
+                    patternToReturn.splice(let1, 1, letterUser);
+                    nbLetToFind--;
+                    //alert("tu as trouvé une lettre");
+                    updateWord();
 
-
-
-
-    //ecoute des touches 
-    document.getElementById("send").addEventListener("click", () => {
-        console.log(arrLetterYet);
-        sendLetter = document.getElementById("userLetter").value.toUpperCase();
-        // check si la lettre entrer existe déjà
-        letExistYet = arrLetterYet.indexOf(sendLetter);
-        //si la lettre n'a pas encore été proposé
-        if (letExistYet < 0) {
-            arrLetterYet.push(sendLetter);
-            //on check si elle existe dans notre mot
-            letExistInWord = arrLetterWord.indexOf(sendLetter);
-            if (letExistInWord >= 0) {
-                for (id in arrLetterWord) {
-                    if (arrLetterWord[id] == sendLetter) {
-                        arrStringToDisp.splice(id, 1, sendLetter);
-                        essaie++;
-                        updateDomTarget();
-                        //checker si fin du mot ou pas
-                        let findWord = arrStringToDisp.indexOf('_ ');
-                        if (findWord < 0) {
-                            domTarget.style.color = "green";
-                            alert(`Bravo, vous avez trouvez le mot ${lemot} en ${essaie} essaie(s)`);
-
-                        }
-                    }
                 }
-            } else {
-                essaie++;
-                error++;
-                (error == 1) ? document.getElementById("pot1").style.display = "block": error = error;
-                (error == 2) ? document.getElementById("pot2").style.display = "block": error = error;
-                (error == 3) ? document.getElementById("pot3").style.display = "block": error = error;
-                (error == 4) ? document.getElementById("head").style.display = "block": error = error;
-                (error == 5) ? document.getElementById("body").style.display = "block": error = error;
-                (error == 6) ? document.getElementById("leftHand").style.display = "block": error = error;
-                (error == 7) ? document.getElementById("rightHand").style.display = "block": error = error;
-                (error == 8) ? document.getElementById("leftFeet").style.display = "block": error = error;
-                (error == 9) ? document.getElementById("rightFeet").style.display = "block": error = error;
-                (error == 10) ? document.getElementById("Anten1").style.display = "block": error = error;
-                (error == 11) ? document.getElementById("Anten2").style.display = "block": error = error;
-
-
             }
-        } else {
-            letterYet();
-            essaie++;
         }
-    });
-    document.getElementById("renew").addEventListener("click", () => {
-        choiceWord();
-    })
-}
-
-function updateDomTarget() {
-    domTarget.innerHTML = arrStringToDisp.join(' ');
-}
-
-function letterYet() {
-    mess = document.getElementById("echange");
-    setTimeout((fadeOut), 1);
-    setTimeout((deja), 1000);
-    setTimeout((fadeOut), 2100)
-    setTimeout((fadeIn), 3100);
-
-    function fadeOut() {
-        mess.style.opacity = 0;
+        essai++;
     }
+});
+document.getElementById("renew").addEventListener("click", () => {
+    choiceWord();
+});
 
-    function deja() {
-        mess.innerHTML = "Déjà proposé";
-        mess.style.color = "red";
-        mess.style.opacity = 1;
-    }
 
-    function fadeIn() {
-        mess.innerHTML = "Essayez encore ;)";
-        mess.style.color = "black";
-        mess.style.opacity = 1;
-    }
-}
 async function choiceWord() {
     const reponse = await fetch("dico.json")
         .then(function(reponse) {
             reponse.json().then(function(data) {
-                let num = Math.floor(Math.random() * data.length);
-                lemot = data[num];
-                // on normalize les accents
-                lemot = lemot.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-                init(lemot);
-            });
-        });
+                //console.log(data);
+                wordNum = Math.floor(Math.random() * data.length);
+                theWord = data[wordNum];
+                tabLetterToFind = theWord.split('');
+                //console.log(tabLetterToFind);
+                for (letterIn in tabLetterToFind) {
+                    let val = tabLetterToFind[letterIn];
+                    if ((val == "é") || (val == "è") || (val == "ê") || (val == "ë")) {
+                        tabLetterToFind.splice(letterIn, 1, "e")
+                    } else if ((val == "à") || (val == "â") || (val == "ä") || (val == "á") || (val == "à")) {
+                        tabLetterToFind.splice(letterIn, 1, "a");
+                    } else if ((val == "ü") || (val == "û") || (val == "ù") || (val == "ú")) {
+                        tabLetterToFind.splice(letterIn, 1, "u");
+                    } else if ((val == "ô") || (val == "ö") || (val == "ó") || (val == "ò")) {
+                        tabLetterToFind.splice(letterIn, 1, "o");
+                    } else if ((val == "ï") || (val == "î")) {
+                        tabLetterToFind.splice(letterIn, 1, "i");
+                    };
+                }
+                tabLetterToFind = tabLetterToFind;
+                init();
+            })
+        })
 }
-
-
 choiceWord();
