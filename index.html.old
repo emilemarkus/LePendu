@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="pendu">
+        <h2>Trouvé le bon mot</h2>
+        <h4 id="echange">Serez-vous assez malin ?</h4>
+        <div id="mot" style="text-align: center;">
+        </div>
+        <div id="ui" style="text-align: center;margin:20px 0px">
+            <input type="text" maxlength=1 size=5 id="userLetter" style="text-align: center;font-size:2em;">
+            <p><button id="send">Soumettre</button></p>
+            <p><button id="renew">Nouvelle Partie</button></p>
+        </div>
+
+    </div>
+
+    <script src="pendu.js"></script>
+</body>
+
+</html>
